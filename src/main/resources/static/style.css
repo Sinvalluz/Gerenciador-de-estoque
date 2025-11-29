@@ -1,0 +1,354 @@
+:root {
+    --primary: #135bec;
+    --primary-light: #e0eaff;
+    --gray-light: #dbdfe6;
+    --gray-text: #616f89;
+    --bg: #f6f6f8;
+    --white: #ffffff;
+    --red: #e53935;
+    --red-light: #ffebee;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Manrope", sans-serif;
+    background-color: var(--bg);
+    color: var(--text-dark);
+    margin: 0;
+    padding: 0;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+    padding: 20px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--white);
+    border: 1px solid #e2e2e2;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 960px;
+    margin-bottom: 32px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 700;
+    padding-left: 2.5rem;
+}
+
+.main-content {
+    position: relative;
+    width: 100%;
+    max-width: 960px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.form-section {
+    background: var(--white);
+    border: 1px solid var(--gray-light);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: var(--text-dark);
+}
+
+.product-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-end;
+}
+
+.product-form label {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 220px;
+}
+
+.product-form span {
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.products-inputs {
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--gray-light);
+    border-radius: 8px;
+    font-size: 15px;
+    color: var(--text-dark);
+    height: 48px;
+}
+
+.products-inputs::placeholder {
+    color: var(--gray-text);
+}
+
+.products-inputs:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(19, 91, 236, 0.15);
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 0 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primary:hover {
+    background-color: #0e4dd6;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(19, 91, 236, 0.2);
+}
+
+.table-section {
+    background: var(--white);
+    border: 1px solid var(--gray-light);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table-section table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-section thead th {
+    text-align: left;
+    padding: 1rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--gray-text);
+    font-weight: 700;
+    border-bottom: 2px solid var(--bg);
+}
+
+.table-section tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--bg);
+    vertical-align: middle;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.table-section tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.col-quantidade {
+    text-align: center;
+}
+
+.col-acoes {
+    text-align: right;
+    width: 140px;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+
+.btn-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-icon .material-symbols-outlined {
+    font-size: 20px;
+}
+
+.btn-icon.edit {
+    background-color: var(--primary-light);
+    color: var(--primary);
+}
+
+.btn-icon.edit:hover {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-icon.delete {
+    background-color: var(--red-light);
+    color: var(--red);
+}
+
+.btn-icon.delete:hover {
+    background-color: var(--red);
+    color: white;
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(17, 19, 24, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    display: block;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 500px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    display: none;
+    flex-direction: column;
+    padding: 24px;
+    gap: 24px;
+}
+
+.modal.active {
+    display: flex;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translate(-50%, -45%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--bg);
+    padding-bottom: 16px;
+    margin-bottom: 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--text-dark);
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--gray-text);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+}
+
+.modal-close:hover {
+    background-color: var(--bg);
+    color: var(--red);
+}
+
+.modal-body #update-form {
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 8px;
+}
+
+.btn {
+    padding: 0 20px;
+    height: 44px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary {
+    background-color: var(--bg);
+    color: var(--text-dark);
+    border: 1px solid transparent;
+}
+
+.btn-secondary:hover {
+    background-color: #e5e7eb;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .app-container {
+        padding: 10px;
+    }
+
+    .product-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .product-form input,
+    .btn-primary {
+        width: 100%;
+    }
+
+    .table-section {
+        padding: 1rem;
+    }
+}
