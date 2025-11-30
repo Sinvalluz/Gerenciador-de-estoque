@@ -1,4 +1,4 @@
-package com.sinvaldev.gerenciadordeestoque.model;
+package com.sinvaldev.gerenciadordeestoque.entity;
 
 
 import jakarta.persistence.*;
@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
+@Builder
 @Getter
 @Setter
 @Table(name = "tb_category")

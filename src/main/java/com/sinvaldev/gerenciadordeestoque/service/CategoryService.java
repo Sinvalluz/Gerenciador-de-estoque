@@ -1,8 +1,5 @@
 package com.sinvaldev.gerenciadordeestoque.service;
-
-import com.sinvaldev.gerenciadordeestoque.dto.CategoryCreateDTO;
-import com.sinvaldev.gerenciadordeestoque.dto.CategoryDTO;
-import com.sinvaldev.gerenciadordeestoque.model.Category;
+import com.sinvaldev.gerenciadordeestoque.entity.Category;
 import com.sinvaldev.gerenciadordeestoque.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,35 +14,25 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public CategoryDTO createCategory(CategoryCreateDTO dto) {
-        Category category = new Category(dto.name());
-        Category saved = categoryRepository.save(category);
-
-        return new CategoryDTO(saved.getId(), saved.getName());
+    public void createCategory(Category category) {
+       categoryRepository.save(category);
     }
 
-    public List<CategoryDTO> findAllCategories() {
-        return categoryRepository.findAll()
-                .stream()
-                .map(category -> new CategoryDTO(category.getId(), category.getName()))
-                .toList();
+    public List<Category> findAllCategories() {
+        return categoryRepository.findAll();
     }
 
-    public CategoryDTO findCategoryById(Integer id) {
-        Category category = categoryRepository.findById(id)
+    public Category findCategoryById(Integer id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+    }
+
+    public Category updateCategory(Integer id, Category category) {
+        Category categoryEntity = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
 
-        return new CategoryDTO(category.getId(), category.getName());
-    }
-
-    public CategoryDTO updateCategory(Integer id, CategoryCreateDTO dto) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
-
-        category.setName(dto.name());
-
-        Category updatedCategory = categoryRepository.save(category);
-        return new CategoryDTO(updatedCategory.getId(), updatedCategory.getName());
+        Category CategoryUpdate = Category.builder().id(categoryEntity.getId()).name(category.getName()).build();
+        return categoryRepository.save(CategoryUpdate);
     }
 
     public void delete(Integer id) {
