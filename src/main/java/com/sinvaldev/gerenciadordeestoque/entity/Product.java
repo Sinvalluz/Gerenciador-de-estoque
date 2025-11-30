@@ -6,12 +6,17 @@ import lombok.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Builder
 @Getter
 @Setter
 @Table(name = "tb_product")
 public class Product {
+
+    public Product(String name, Integer quantity, Category category) {
+        this.name = name;
+        this.quantity = quantity;
+        this.category = category;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +31,5 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
 }
