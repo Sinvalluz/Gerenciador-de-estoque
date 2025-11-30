@@ -15,16 +15,17 @@ public class CategoryService {
     }
 
     public void createCategory(Category category) {
+
+        categoryRepository.findByName(category.getName())
+                        .ifPresent(c -> {
+                            throw new RuntimeException("Já existe uma categoria com esse nome: " + c.getName());
+                        });
+
        categoryRepository.save(category);
     }
 
     public List<Category> findAllCategories() {
         return categoryRepository.findAll();
-    }
-
-    public Category findCategoryById(Integer id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
     }
 
     public Category updateCategory(Integer id, Category category) {
