@@ -16,8 +16,14 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public void createProduct (Product product) {
-        productRepository.save(product);
+    public Product createProduct (Product product) {
+
+        productRepository.findByName(product.getName())
+                .ifPresent(p -> {
+                    throw new RuntimeException("Já existe um produto cadastrado com o nome: " + p.getName());
+                });
+
+       return productRepository.save(product);
     }
 
     public List<Product> findAllProducts(){
