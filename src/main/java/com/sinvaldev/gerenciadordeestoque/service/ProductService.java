@@ -41,7 +41,8 @@ public class ProductService {
         Product productUpdated = Product.builder()
                 .id(productEntity.getId())
                 .name(product.getName() != null ? product.getName() : productEntity.getName())
-                .quantity(product.getQuantity() != null ? product.getQuantity() : productEntity.getQuantity()).build();
+                .quantity(product.getQuantity() != null ? product.getQuantity() : productEntity.getQuantity())
+                .category(productEntity.getCategory()).build();
 
         return productRepository.save(productUpdated);
     }
