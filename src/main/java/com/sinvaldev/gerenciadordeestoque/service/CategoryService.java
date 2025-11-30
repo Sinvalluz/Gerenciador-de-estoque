@@ -31,11 +31,14 @@ public class CategoryService {
         Category categoryEntity = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
 
-        Category CategoryUpdate = Category.builder().id(categoryEntity.getId()).name(category.getName()).build();
-        return categoryRepository.save(CategoryUpdate);
+        Category categoryUpdated = Category.builder().id(categoryEntity.getId()).name(category.getName()).build();
+        return categoryRepository.save(categoryUpdated);
     }
 
     public void delete(Integer id) {
+        categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+
         categoryRepository.deleteById(id);
     }
 }
