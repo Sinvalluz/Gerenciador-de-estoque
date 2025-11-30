@@ -17,11 +17,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NonNull
     @Column(name = "name")
     private String name;
 
-    @NonNull
     @Column(name = "quantity")
     private String quantity;
 
