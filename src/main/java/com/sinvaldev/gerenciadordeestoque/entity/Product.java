@@ -21,7 +21,7 @@ public class Product {
     private String name;
 
     @Column(name = "quantity")
-    private String quantity;
+    private Integer quantity;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
