@@ -6,6 +6,7 @@ import com.sinvaldev.gerenciadordeestoque.dto.ProductDTO;
 import com.sinvaldev.gerenciadordeestoque.dto.ProductUpdateDTO;
 import com.sinvaldev.gerenciadordeestoque.entity.Category;
 import com.sinvaldev.gerenciadordeestoque.entity.Product;
+import com.sinvaldev.gerenciadordeestoque.mapper.ProductMapper;
 import com.sinvaldev.gerenciadordeestoque.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,64 +28,24 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductCreateDTO productCreateDTO) {
         Product product = new Product(productCreateDTO.name(), productCreateDTO.quantity(), new Category(productCreateDTO.categoryId().id(), productCreateDTO.categoryId().name()));
-        Product saved = productService.createProduct(product);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(
-                        new ProductDTO(
-                                saved.getId(),
-                                saved.getName(),
-                                saved.getQuantity(),
-                                new CategoryDTO(
-                                        saved.getCategory().getId(),
-                                        saved.getCategory().getName())));
+                .body(productService.createProduct(ProductMapper.toProductDto(product)));
     }
 
     @GetMapping
     public ResponseEntity<List<ProductDTO>> listAll () {
-        List<Product> products = productService.findAllProducts();
-        return ResponseEntity.ok(products
-                .stream()
-                .map(product ->
-                        new ProductDTO(
-                                product.getId(),
-                                product.getName(),
-                                product.getQuantity(),
-                                new CategoryDTO(
-                                        product.getCategory().getId(),
-                                        product.getCategory().getName())))
-                .toList());
+        return ResponseEntity.ok(productService.findAllProducts());
     }
 
     @GetMapping("/by-category")
     public ResponseEntity<List<ProductDTO>> listByCategory(@RequestParam Integer categoryId) {
-        List<Product> products = productService.findByCategory(categoryId);
-        return ResponseEntity.ok(products
-                .stream()
-                .map(product ->
-                        new ProductDTO(
-                                product.getId(),
-                                product.getName(),
-                                product.getQuantity(),
-                                new CategoryDTO(
-                                        product.getCategory().getId(),
-                                        product.getCategory().getName())))
-                .toList());
+        return ResponseEntity.ok(productService.findByCategory(categoryId));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Integer id, @RequestBody ProductUpdateDTO productUpdateDTO) {
-        Product product = new Product(productUpdateDTO.name(), productUpdateDTO.quantity(), new Category(productUpdateDTO.categoryId().id(), productUpdateDTO.categoryId().name()));
-        Product updatedProduct = productService.updateProduct(id, product);
-
-        return ResponseEntity.ok(
-                new ProductDTO(
-                        updatedProduct.getId(),
-                        updatedProduct.getName(),
-                        updatedProduct.getQuantity(),
-                        new CategoryDTO(
-                                updatedProduct.getCategory().getId(),
-                                updatedProduct.getCategory().getName())));
+        return ResponseEntity.ok(productService.updateProduct(id, productUpdateDTO));
     }
 
     @DeleteMapping("/{id}")

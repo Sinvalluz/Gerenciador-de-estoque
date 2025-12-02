@@ -1,7 +1,10 @@
 package com.sinvaldev.gerenciadordeestoque.service;
 
-
+import com.sinvaldev.gerenciadordeestoque.dto.ProductDTO;
+import com.sinvaldev.gerenciadordeestoque.dto.ProductUpdateDTO;
 import com.sinvaldev.gerenciadordeestoque.entity.Product;
+import com.sinvaldev.gerenciadordeestoque.mapper.CategoryMapper;
+import com.sinvaldev.gerenciadordeestoque.mapper.ProductMapper;
 import com.sinvaldev.gerenciadordeestoque.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,22 +19,22 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product createProduct (Product product) {
+    public ProductDTO createProduct (ProductDTO productDTO) {
+        Product product = ProductMapper.toEntity(productDTO);
 
         productRepository.findByName(product.getName())
                 .ifPresent(p -> {
                     throw new RuntimeException("Já existe um produto cadastrado com o nome: " + p.getName());
                 });
-
-       return productRepository.save(product);
+       return ProductMapper.toProductDto(productRepository.save(product));
     }
 
-    public List<Product> findAllProducts(){
-        return productRepository.findAll();
+    public List<ProductDTO> findAllProducts(){
+        return productRepository.findAll().stream().map(ProductMapper::toProductDto).toList();
     }
 
-    public List<Product> findByCategory(Integer id) {
-        List<Product> products = productRepository.findByCategoryId(id);
+    public List<ProductDTO> findByCategory(Integer id) {
+        List<ProductDTO> products = productRepository.findByCategoryId(id).stream().map(ProductMapper::toProductDto).toList();
 
         if (products.isEmpty()) {
             throw new RuntimeException("Nenhum produto encontrado para a categoria ID: " + id);
@@ -40,17 +43,17 @@ public class ProductService {
         return products;
     }
 
-    public Product updateProduct(Integer id, Product product) {
+    public ProductDTO updateProduct(Integer id, ProductUpdateDTO productUpdateDTO) {
         Product productEntity = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Nenhum produto encontrado para a categoria ID: " + id));
 
         Product productUpdated = Product.builder()
                 .id(productEntity.getId())
-                .name(product.getName() != null ? product.getName() : productEntity.getName())
-                .quantity(product.getQuantity() != null ? product.getQuantity() : productEntity.getQuantity())
-                .category(product.getCategory() != null ? product.getCategory() : productEntity.getCategory()).build();
+                .name(productUpdateDTO.name() != null ? productUpdateDTO.name() : productEntity.getName())
+                .quantity(productUpdateDTO.quantity() != null ? productUpdateDTO.quantity() : productEntity.getQuantity())
+                .category(productUpdateDTO.categoryId() != null ? CategoryMapper.toEntity(productUpdateDTO.categoryId()) : productEntity.getCategory()).build();
 
-        return productRepository.save(productUpdated);
+        return ProductMapper.toProductDto(productRepository.save(productUpdated));
     }
 
     public void delete(Integer id) {
